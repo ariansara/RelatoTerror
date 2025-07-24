@@ -67,7 +67,14 @@ header h1 {
     line-height: 50px;
     transition: transform 0.2s;
 }
-
+#player-wrapper {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden; /* Esto asegura que no se vea nada si el iframe crece */
+}
 #play-pause-btn:hover {
     transform: scale(1.1);
 }

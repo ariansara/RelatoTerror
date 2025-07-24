@@ -4,7 +4,7 @@ let isPlayerReady = false;
 let currentPodcast = null;
 let subtitleInterval;
 
-// --- BASE DE DATOS DE PODCASTS ---
+// --- BASE DE DATOS DE PODCASTS (sin cambios) ---
 const podcasts = [
     {
         id: 1,
@@ -49,8 +49,7 @@ const podcasts = [
     }
 ];
 
-
-// --- ELEMENTOS DEL DOM ---
+// --- ELEMENTOS DEL DOM (sin cambios) ---
 const podcastTitle = document.getElementById('podcast-title');
 const podcastArtist = document.getElementById('podcast-artist');
 const subtitlesEl = document.getElementById('subtitles');
@@ -60,24 +59,24 @@ const playPauseBtn = document.getElementById('play-pause-btn');
 const progressBar = document.getElementById('progress-bar');
 const progressBarContainer = document.querySelector('.progress-bar-container');
 
-// --- INICIALIZACIÓN DE LA PÁGINA ---
+// --- INICIALIZACIÓN DE LA PÁGINA (sin cambios) ---
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Página cargada. Mostrando la lista de podcasts...");
     displayPodcasts('all');
     setupEventListeners();
 });
 
-
 // --- FUNCIONES DE LA API DE YOUTUBE ---
+// **CAMBIO IMPORTANTE EN LA INICIALIZACIÓN**
 function onYouTubeIframeAPIReady() {
-    // MENSAJE DE DEPURACIÓN IMPORTANTE
     console.log(`Intentando crear reproductor para el origen: ${window.location.origin}`);
-    
     player = new YT.Player('youtube-player', {
-        height: '0',
-        width: '0',
+        height: '1', // Tamaño mínimo pero existente
+        width: '1',  // Tamaño mínimo pero existente
         playerVars: {
-            'origin': window.location.origin
+            'playsinline': 1, // Parámetro importante para compatibilidad
+            'origin': window.location.origin,
+            'controls': 0,    // Oculta los controles de YouTube
+            'disablekb': 1    // Deshabilita el control por teclado
         },
         events: {
             'onReady': onPlayerReady,
@@ -92,22 +91,18 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    // Si el video se está reproduciendo
     if (event.data == YT.PlayerState.PLAYING) {
         playPauseBtn.textContent = '⏸️';
         subtitleInterval = setInterval(updateUI, 250);
-    } 
-    // Si se pausa, termina, o cualquier otro estado
-    else {
+    } else {
         playPauseBtn.textContent = '▶️';
         clearInterval(subtitleInterval);
     }
 }
 
-// --- LÓGICA DE LA APLICACIÓN ---
+// --- LÓGICA DE LA APLICACIÓN (el resto del código se mantiene igual) ---
 
 function playPodcast(podcast) {
-    console.log("Se hizo clic en un podcast. ¿Está listo el reproductor?", isPlayerReady);
     if (!isPlayerReady) {
         alert("El reproductor de YouTube todavía está cargando. Por favor, espera un momento y vuelve a intentarlo.");
         return;
@@ -116,7 +111,6 @@ function playPodcast(podcast) {
     podcastTitle.textContent = podcast.title;
     podcastArtist.textContent = podcast.artist;
     
-    console.log(`Cargando y reproduciendo video con ID: ${podcast.videoId}`);
     player.loadVideoById(podcast.videoId);
     
     subtitlesEl.textContent = '...';
@@ -172,7 +166,7 @@ function setupEventListeners() {
         if (playerState === YT.PlayerState.PLAYING) {
             player.pauseVideo();
         } else {
-            if (playerState === YT.PlayerState.PAUSED || playerState === YT.PlayerState.CUED) {
+            if (playerState === YT.PlayerState.PAUSED || playerState === YT.PlayerState.CUED || playerState === YT.PlayerState.UNSTARTED) {
                  player.playVideo();
             }
         }

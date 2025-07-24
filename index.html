@@ -9,20 +9,21 @@
 <body>
 
     <div class="podcast-container">
+        <!-- Contenedor para el reproductor, que moveremos fuera de la pantalla -->
+        <div id="player-wrapper">
+            <div id="youtube-player"></div>
+        </div>
+
         <header>
             <h1>Escucha nuestros Podcasts</h1>
             <p>Ahora con audio y subtítulos desde YouTube.</p>
         </header>
-
-        <!-- El reproductor de YouTube se cargará aquí, pero lo haremos invisible con CSS -->
-        <div id="youtube-player"></div>
 
         <div class="custom-player">
             <div class="player-info">
                 <h2 id="podcast-title">Selecciona un episodio</h2>
                 <p id="podcast-artist">...</p>
             </div>
-            <!-- Nuestros propios controles -->
             <div class="controls">
                 <button id="play-pause-btn">▶️</button>
                 <div class="progress-bar-container">
@@ -42,27 +43,22 @@
                     <button class="filter-btn active" data-genre="all">Todos</button>
                     <button class="filter-btn" data-genre="ciencia">Ciencia</button>
                     <button class="filter-btn" data-genre="desarrollo">Desarrollo</button>
-                    <!-- CAMBIO: Se actualizó la categoría -->
-                    <button class="filter-btn" data-genre="analisis">Análisis</button> 
+                    <button class="filter-btn" data-genre="analisis">Análisis</button>
                 </div>
             </div>
 
             <div class="podcast-list-section">
                 <h3>Episodios Disponibles</h3>
-                <ul id="podcast-list">
-                    <!-- Los episodios se cargarán aquí -->
-                </ul>
+                <ul id="podcast-list"></ul>
             </div>
         </main>
 
         <footer>
-            <p>&copy; 2025 Mi Página de Podcasts</p>
+            <p>© 2025 Mi Página de Podcasts</p>
         </footer>
     </div>
-
-    <!-- Script de la API de YouTube Iframe -->
+    
     <script src="https://www.youtube.com/iframe_api"></script>
-    <!-- Nuestro script -->
     <script src="app.js"></script>
 </body>
 </html>
