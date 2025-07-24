@@ -37,7 +37,7 @@ const podcasts = [
         title: 'La Historia de la Amistad | Toy Story',
         artist: 'El Temach',
         genre: 'analisis',
-        videoId: 'JkAXz6v_4-I',
+        videoId: 'watch?v=jsljGbjjLR4',
         subtitles: [
             [6, 9, "Bienvenidos a una edición más del Temach Vlog."],
             [10, 16, "Ya sabe que el Temach Vlog es donde analizamos películas, series, canciones y conceptos."],
