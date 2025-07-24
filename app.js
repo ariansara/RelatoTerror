@@ -32,13 +32,12 @@ const podcasts = [
             [18.5, 21, "La primera, sin duda, es la constancia."]
         ]
     },
-    // --- PODCAST AÑADIDO ---
     {
         id: 3,
         title: 'La Historia de la Amistad | Toy Story',
         artist: 'El Temach',
         genre: 'analisis',
-        videoId: 'JkAXz6v_4-I', // ID del video que proporcionaste
+        videoId: 'JkAXz6v_4-I',
         subtitles: [
             [6, 9, "Bienvenidos a una edición más del Temach Vlog."],
             [10, 16, "Es donde analizamos películas, series, canciones y conceptos."],
@@ -66,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
 });
 
+
 // --- FUNCIONES DE LA API DE YOUTUBE ---
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
@@ -83,6 +83,7 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
     isPlayerReady = true;
+    console.log("El reproductor de YouTube está listo y operativo.");
 }
 
 function onPlayerStateChange(event) {
@@ -95,19 +96,24 @@ function onPlayerStateChange(event) {
     }
 }
 
-// --- FUNCIONES DE LA LÓGICA DE LA APLICACIÓN ---
-function loadPodcast(podcast) {
+
+// --- LÓGICA DE LA APLICACIÓN ---
+
+// **CAMBIO CLAVE**: Esta función ahora carga Y REPRODUCE el video.
+function playPodcast(podcast) {
     if (!isPlayerReady) {
-        alert("El reproductor de YouTube todavía está cargando, por favor espera un momento.");
+        alert("El reproductor de YouTube todavía está cargando. Por favor, espera un momento y vuelve a intentarlo.");
         return;
     }
     currentPodcast = podcast;
     podcastTitle.textContent = podcast.title;
     podcastArtist.textContent = podcast.artist;
-    player.cueVideoById(podcast.videoId);
+    
+    // Usamos loadVideoById que carga y reproduce automáticamente.
+    player.loadVideoById(podcast.videoId);
+    
     subtitlesEl.textContent = '...';
     progressBar.style.width = '0%';
-    playPauseBtn.textContent = '▶️';
 }
 
 function displayPodcasts(filter = 'all') {
@@ -117,20 +123,23 @@ function displayPodcasts(filter = 'all') {
     filteredPodcasts.forEach(podcast => {
         const listItem = document.createElement('li');
         listItem.className = 'podcast-item';
-        listItem.innerHTML = `<div class="podcast-item-info"><h4>${podcast.title}</h4><p>${podcast.artist}</p></div><span>▶️</span>`;
-        listItem.addEventListener('click', () => loadPodcast(podcast));
+        listItem.innerHTML = `<div class="podcast-item-info"><h4>${podcast.title}</h4><p>${podcast.artist}</p></div><span class="play-icon">▶️</span>`;
+        // **CAMBIO CLAVE**: El evento de clic en la lista llama a playPodcast
+        listItem.addEventListener('click', () => playPodcast(podcast));
         podcastListEl.appendChild(listItem);
     });
 }
 
 function updateUI() {
-    if (!currentPodcast || !isPlayerReady || typeof player.getCurrentTime !== 'function' || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
-    
+    if (!currentPodcast || !isPlayerReady || typeof player.getCurrentTime !== 'function') return;
+
     const currentTime = player.getCurrentTime();
     const duration = player.getDuration();
+
     if (duration > 0) {
         progressBar.style.width = `${(currentTime / duration) * 100}%`;
     }
+
     const activeSubtitle = currentPodcast.subtitles.find(sub => currentTime >= sub[0] && currentTime <= sub[1]);
     if (activeSubtitle) {
         if (subtitlesEl.textContent !== activeSubtitle[2]) {
@@ -151,13 +160,17 @@ function setupEventListeners() {
         }
     });
 
+    // **CAMBIO CLAVE**: El botón principal ahora solo pausa o reanuda si ya hay algo reproduciéndose.
     playPauseBtn.addEventListener('click', () => {
         if (!currentPodcast || !isPlayerReady) return;
         const playerState = player.getPlayerState();
         if (playerState === YT.PlayerState.PLAYING) {
             player.pauseVideo();
         } else {
-            player.playVideo();
+            // Solo reproduce si está en pausa o cargado, no si está vacío.
+            if (playerState === YT.PlayerState.PAUSED || playerState === YT.PlayerState.CUED) {
+                 player.playVideo();
+            }
         }
     });
     
