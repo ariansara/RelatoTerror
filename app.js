@@ -4,7 +4,7 @@ let isPlayerReady = false;
 let currentPodcast = null;
 let subtitleInterval;
 
-// --- BASE DE DATOS DE PODCASTS (sin cambios) ---
+// --- BASE DE DATOS DE PODCASTS ---
 const podcasts = [
     { id: 1, title: '¿Qué hay dentro de un Agujero Negro?', artist: 'Dot CSV', genre: 'ciencia', videoId: 'sWso_g5yS2E', subtitles: [ [2.5, 6.8, "Los agujeros negros son los objetos más misteriosos y fascinantes del universo."], [7, 11, "Su gravedad es tan fuerte que ni siquiera la luz puede escapar."], [11.5, 15, "Pero, ¿qué pasaría si pudieras viajar dentro de uno?"], [15.5, 19, "En su frontera, el horizonte de sucesos, el tiempo se deforma."] ] },
     { id: 2, title: 'Cómo aprendí a programar', artist: 'midudev', genre: 'desarrollo', videoId: 'g2LpL8Jj0_Y', subtitles: [ [5, 8.5, "Mucha gente me pregunta cómo pueden aprender a programar."], [9, 13, "Y la verdad es que no hay una única respuesta correcta para todos."], [13.5, 18, "Pero sí que hay algunas cosas que a mí personalmente me sirvieron muchísimo."], [18.5, 21, "La primera, sin duda, es la constancia."] ] },
@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- FUNCIONES DE LA API DE YOUTUBE ---
 function onYouTubeIframeAPIReady() {
-    // CAMBIO: Ahora nos "enganchamos" al iframe que ya existe en el HTML
     player = new YT.Player('youtube-player-iframe', {
         events: {
             'onReady': onPlayerReady,
@@ -58,8 +57,10 @@ function loadAndPlayPodcast(podcast) {
     podcastTitle.textContent = podcast.title;
     podcastArtist.textContent = podcast.artist;
     
-    // CAMBIO: Ahora usamos loadVideoById. Esto cargará y reproducirá el video.
-    player.loadVideoById({videoId: podcast.videoId});
+    // ----- LA CORRECCIÓN ESTÁ AQUÍ -----
+    // Le pasamos el ID directamente como un string, no como un objeto.
+    player.loadVideoById(podcast.videoId); 
+    // ------------------------------------
     
     subtitlesEl.textContent = 'Cargando subtítulos...';
 }
