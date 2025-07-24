@@ -54,6 +54,12 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
         height: '0',
         width: '0',
+        // --- LA LÍNEA MÁGICA ESTÁ AQUÍ ---
+        playerVars: {
+            // Le decimos a la API que nuestra página está alojada en este dominio.
+            'origin': 'https://ariansara.github.io'
+        },
+        // ------------------------------------
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -70,6 +76,7 @@ const genreFiltersEl = document.getElementById('genre-filters');
 const playPauseBtn = document.getElementById('play-pause-btn');
 const progressBar = document.getElementById('progress-bar');
 const progressBarContainer = document.querySelector('.progress-bar-container');
+
 
 // --- FUNCIONES DEL REPRODUCTOR ---
 function onPlayerReady(event) {
