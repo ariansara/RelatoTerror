@@ -3,33 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Podcasts (Versión YouTube)</title>
+    <title>Mi Página de Podcasts (Solución Final)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="podcast-container">
-        <!-- Contenedor para el reproductor, que moveremos fuera de la pantalla -->
-        <div id="player-wrapper">
-            <div id="youtube-player"></div>
-        </div>
-
         <header>
             <h1>Escucha nuestros Podcasts</h1>
-            <p>Ahora con audio y subtítulos desde YouTube.</p>
+            <p>Selecciona un episodio de la lista para cargarlo en el reproductor.</p>
         </header>
 
-        <div class="custom-player">
-            <div class="player-info">
+        <!-- CAMBIO: El reproductor ahora tiene un contenedor visible -->
+        <div class="player-container">
+            <div id="player-info">
                 <h2 id="podcast-title">Selecciona un episodio</h2>
                 <p id="podcast-artist">...</p>
             </div>
-            <div class="controls">
-                <button id="play-pause-btn">▶️</button>
-                <div class="progress-bar-container">
-                    <div id="progress-bar"></div>
-                </div>
-            </div>
+            <!-- El reproductor de YouTube se mostrará aquí -->
+            <div id="youtube-player"></div>
         </div>
 
         <div id="subtitles-container">
