@@ -49,6 +49,7 @@ const podcasts = [
     }
 ];
 
+
 // --- ELEMENTOS DEL DOM ---
 const podcastTitle = document.getElementById('podcast-title');
 const podcastArtist = document.getElementById('podcast-artist');
@@ -61,6 +62,7 @@ const progressBarContainer = document.querySelector('.progress-bar-container');
 
 // --- INICIALIZACIÓN DE LA PÁGINA ---
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Página cargada. Mostrando la lista de podcasts...");
     displayPodcasts('all');
     setupEventListeners();
 });
@@ -68,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- FUNCIONES DE LA API DE YOUTUBE ---
 function onYouTubeIframeAPIReady() {
+    // MENSAJE DE DEPURACIÓN IMPORTANTE
+    console.log(`Intentando crear reproductor para el origen: ${window.location.origin}`);
+    
     player = new YT.Player('youtube-player', {
         height: '0',
         width: '0',
@@ -83,24 +88,26 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
     isPlayerReady = true;
-    console.log("El reproductor de YouTube está listo y operativo.");
+    console.log("¡ÉXITO! El reproductor de YouTube está listo y operativo.");
 }
 
 function onPlayerStateChange(event) {
+    // Si el video se está reproduciendo
     if (event.data == YT.PlayerState.PLAYING) {
         playPauseBtn.textContent = '⏸️';
         subtitleInterval = setInterval(updateUI, 250);
-    } else {
+    } 
+    // Si se pausa, termina, o cualquier otro estado
+    else {
         playPauseBtn.textContent = '▶️';
         clearInterval(subtitleInterval);
     }
 }
 
-
 // --- LÓGICA DE LA APLICACIÓN ---
 
-// **CAMBIO CLAVE**: Esta función ahora carga Y REPRODUCE el video.
 function playPodcast(podcast) {
+    console.log("Se hizo clic en un podcast. ¿Está listo el reproductor?", isPlayerReady);
     if (!isPlayerReady) {
         alert("El reproductor de YouTube todavía está cargando. Por favor, espera un momento y vuelve a intentarlo.");
         return;
@@ -109,7 +116,7 @@ function playPodcast(podcast) {
     podcastTitle.textContent = podcast.title;
     podcastArtist.textContent = podcast.artist;
     
-    // Usamos loadVideoById que carga y reproduce automáticamente.
+    console.log(`Cargando y reproduciendo video con ID: ${podcast.videoId}`);
     player.loadVideoById(podcast.videoId);
     
     subtitlesEl.textContent = '...';
@@ -124,7 +131,6 @@ function displayPodcasts(filter = 'all') {
         const listItem = document.createElement('li');
         listItem.className = 'podcast-item';
         listItem.innerHTML = `<div class="podcast-item-info"><h4>${podcast.title}</h4><p>${podcast.artist}</p></div><span class="play-icon">▶️</span>`;
-        // **CAMBIO CLAVE**: El evento de clic en la lista llama a playPodcast
         listItem.addEventListener('click', () => playPodcast(podcast));
         podcastListEl.appendChild(listItem);
     });
@@ -160,14 +166,12 @@ function setupEventListeners() {
         }
     });
 
-    // **CAMBIO CLAVE**: El botón principal ahora solo pausa o reanuda si ya hay algo reproduciéndose.
     playPauseBtn.addEventListener('click', () => {
         if (!currentPodcast || !isPlayerReady) return;
         const playerState = player.getPlayerState();
         if (playerState === YT.PlayerState.PLAYING) {
             player.pauseVideo();
         } else {
-            // Solo reproduce si está en pausa o cargado, no si está vacío.
             if (playerState === YT.PlayerState.PAUSED || playerState === YT.PlayerState.CUED) {
                  player.playVideo();
             }
