@@ -1,6 +1,6 @@
 // --- VARIABLES GLOBALES ---
-let player; // Variable para el reproductor de YouTube
-let isPlayerReady = false; // Una bandera para saber si el reproductor está listo
+let player;
+let isPlayerReady = false;
 let currentPodcast = null;
 let subtitleInterval;
 
@@ -32,15 +32,16 @@ const podcasts = [
             [18.5, 21, "La primera, sin duda, es la constancia."]
         ]
     },
+    // --- PODCAST AÑADIDO ---
     {
         id: 3,
         title: 'La Historia de la Amistad | Toy Story',
         artist: 'El Temach',
         genre: 'analisis',
-        videoId: 'watch?v=jsljGbjjLR4',
+        videoId: 'JkAXz6v_4-I', // ID del video que proporcionaste
         subtitles: [
             [6, 9, "Bienvenidos a una edición más del Temach Vlog."],
-            [10, 16, "Ya sabe que el Temach Vlog es donde analizamos películas, series, canciones y conceptos."],
+            [10, 16, "Es donde analizamos películas, series, canciones y conceptos."],
             [25, 30, "Hoy vamos a hablar de Toy Story, la historia sobre la amistad."],
             [31, 34, "La amistad que se desarrolla de dos vatos que se odiaban."],
             [38, 43, "Esta película es gangsta, mi compa. El vato lo aventó por la ventana."],
@@ -60,22 +61,18 @@ const progressBar = document.getElementById('progress-bar');
 const progressBarContainer = document.querySelector('.progress-bar-container');
 
 // --- INICIALIZACIÓN DE LA PÁGINA ---
-// Este evento se dispara cuando la estructura HTML de la página está completamente cargada.
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("La página ha cargado. Mostrando podcasts...");
     displayPodcasts('all');
     setupEventListeners();
 });
 
 // --- FUNCIONES DE LA API DE YOUTUBE ---
-// La API de YouTube llamará a esta función automáticamente cuando su script esté listo.
 function onYouTubeIframeAPIReady() {
-    console.log("API de YouTube lista. Creando reproductor...");
     player = new YT.Player('youtube-player', {
         height: '0',
         width: '0',
         playerVars: {
-            'origin': window.location.origin // Usamos el origen actual de la ventana
+            'origin': window.location.origin
         },
         events: {
             'onReady': onPlayerReady,
@@ -84,13 +81,10 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// Esta función se llama cuando el reproductor de YouTube está listo y puede recibir comandos.
 function onPlayerReady(event) {
-    console.log("¡Reproductor de YouTube listo!");
-    isPlayerReady = true; // Actualizamos nuestra bandera
+    isPlayerReady = true;
 }
 
-// Se llama cuando el estado del reproductor cambia (play, pausa, etc.)
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
         playPauseBtn.textContent = '⏸️';
@@ -102,24 +96,20 @@ function onPlayerStateChange(event) {
 }
 
 // --- FUNCIONES DE LA LÓGICA DE LA APLICACIÓN ---
-
-// Carga un podcast en el reproductor
 function loadPodcast(podcast) {
     if (!isPlayerReady) {
-        console.error("El reproductor de YouTube aún no está listo.");
         alert("El reproductor de YouTube todavía está cargando, por favor espera un momento.");
         return;
     }
     currentPodcast = podcast;
     podcastTitle.textContent = podcast.title;
     podcastArtist.textContent = podcast.artist;
-    player.cueVideoById(podcast.videoId); // Prepara el video
+    player.cueVideoById(podcast.videoId);
     subtitlesEl.textContent = '...';
     progressBar.style.width = '0%';
     playPauseBtn.textContent = '▶️';
 }
 
-// Muestra la lista de podcasts en la página
 function displayPodcasts(filter = 'all') {
     podcastListEl.innerHTML = '';
     const filteredPodcasts = podcasts.filter(p => filter === 'all' || p.genre === filter);
@@ -133,18 +123,14 @@ function displayPodcasts(filter = 'all') {
     });
 }
 
-// Actualiza la barra de progreso y los subtítulos
 function updateUI() {
     if (!currentPodcast || !isPlayerReady || typeof player.getCurrentTime !== 'function' || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
     
     const currentTime = player.getCurrentTime();
     const duration = player.getDuration();
-
     if (duration > 0) {
         progressBar.style.width = `${(currentTime / duration) * 100}%`;
     }
-
-    // Actualizar subtítulos
     const activeSubtitle = currentPodcast.subtitles.find(sub => currentTime >= sub[0] && currentTime <= sub[1]);
     if (activeSubtitle) {
         if (subtitlesEl.textContent !== activeSubtitle[2]) {
@@ -156,7 +142,6 @@ function updateUI() {
     }
 }
 
-// Configura todos los event listeners de los botones y la barra
 function setupEventListeners() {
     genreFiltersEl.addEventListener('click', (e) => {
         if (e.target.tagName === 'BUTTON') {
