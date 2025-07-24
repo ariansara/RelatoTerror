@@ -10,17 +10,24 @@ body {
     margin: 0;
     padding: 20px;
 }
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: #121212;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color: #121212; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+.podcast-container { background-color: #181818; border-radius: 10px; padding: 30px; width: 100%; max-width: 800px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+header { text-align: center; margin-bottom: 20px; }
+header h1 { font-size: 2.5em; margin: 0; }
+
+/* --- ESTILOS PARA EL REPRODUCTOR VISIBLE --- */
+.player-container { background-color: #282828; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+#player-info { text-align: center; margin-bottom: 15px; }
+#player-info h2 { margin: 0 0 5px 0; }
+#player-info p { margin: 0; color: #b3b3b3; }
+
+/* CAMBIO: Estilo para el iframe */
+#youtube-player-iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Mantiene la proporción de video */
+    border-radius: 4px;
+    border: none; /* Elimina el borde por defecto */
+    }
 .podcast-container { background-color: #181818; border-radius: 10px; padding: 30px; width: 100%; max-width: 800px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 header { text-align: center; margin-bottom: 20px; }
 header h1 { font-size: 2.5em; margin: 0; }

@@ -26,12 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- FUNCIONES DE LA API DE YOUTUBE ---
 function onYouTubeIframeAPIReady() {
-    player = new YT.Player('youtube-player', {
-        height: '100%', // El reproductor se ajustará a su contenedor
-        width: '100%',
-        playerVars: {
-            'origin': window.location.origin
-        },
+    // CAMBIO: Ahora nos "enganchamos" al iframe que ya existe en el HTML
+    player = new YT.Player('youtube-player-iframe', {
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -41,24 +37,19 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
     isPlayerReady = true;
-    console.log("Reproductor de YouTube listo.");
+    console.log("Reproductor de YouTube listo y enlazado al iframe.");
 }
 
 function onPlayerStateChange(event) {
-    // Si el video se está reproduciendo, iniciamos la sincronización de subtítulos
     if (event.data == YT.PlayerState.PLAYING) {
-        subtitleInterval = setInterval(updateSubtitles, 250);
+        subtitleInterval = setInterval(updateUI, 250);
     } else {
-        // Si se pausa o termina, detenemos la sincronización
         clearInterval(subtitleInterval);
     }
 }
 
-
 // --- LÓGICA DE LA APLICACIÓN ---
-
-// **NUEVA LÓGICA**: Carga el video en el reproductor visible
-function loadPodcast(podcast) {
+function loadAndPlayPodcast(podcast) {
     if (!isPlayerReady) {
         alert("El reproductor de YouTube todavía está cargando. Por favor, espera un momento.");
         return;
@@ -67,10 +58,10 @@ function loadPodcast(podcast) {
     podcastTitle.textContent = podcast.title;
     podcastArtist.textContent = podcast.artist;
     
-    // Carga el video. El usuario le dará play manualmente.
-    player.cueVideoById({videoId: podcast.videoId});
+    // CAMBIO: Ahora usamos loadVideoById. Esto cargará y reproducirá el video.
+    player.loadVideoById({videoId: podcast.videoId});
     
-    subtitlesEl.textContent = 'Haz clic en play para iniciar...';
+    subtitlesEl.textContent = 'Cargando subtítulos...';
 }
 
 function displayPodcasts(filter = 'all') {
@@ -81,18 +72,17 @@ function displayPodcasts(filter = 'all') {
         const listItem = document.createElement('li');
         listItem.className = 'podcast-item';
         listItem.innerHTML = `<div class="podcast-item-info"><h4>${podcast.title}</h4><p>${podcast.artist}</p></div><span class="play-icon">▶️</span>`;
-        listItem.addEventListener('click', () => loadPodcast(podcast));
+        listItem.addEventListener('click', () => loadAndPlayPodcast(podcast));
         podcastListEl.appendChild(listItem);
     });
 }
 
-function updateSubtitles() {
-    // Esta función ahora es más simple
+function updateUI() {
     if (!currentPodcast || typeof player.getCurrentTime !== 'function') return;
 
     const currentTime = player.getCurrentTime();
+    
     const activeSubtitle = currentPodcast.subtitles.find(sub => currentTime >= sub[0] && currentTime <= sub[1]);
-
     if (activeSubtitle) {
         if (subtitlesEl.textContent !== activeSubtitle[2]) {
             subtitlesEl.textContent = activeSubtitle[2];
@@ -106,7 +96,6 @@ function updateSubtitles() {
 }
 
 function setupEventListeners() {
-    // Solo necesitamos el filtro. Ya no controlamos el play/pause.
     genreFiltersEl.addEventListener('click', (e) => {
         if (e.target.tagName === 'BUTTON') {
             document.querySelector('.filter-btn.active').classList.remove('active');

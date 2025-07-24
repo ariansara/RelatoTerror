@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página de Podcasts (Solución Final)</title>
+    <title>Mi Página de Podcasts (Solución Iframe)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,14 +14,21 @@
             <p>Selecciona un episodio de la lista para cargarlo en el reproductor.</p>
         </header>
 
-        <!-- CAMBIO: El reproductor ahora tiene un contenedor visible -->
         <div class="player-container">
             <div id="player-info">
                 <h2 id="podcast-title">Selecciona un episodio</h2>
                 <p id="podcast-artist">...</p>
             </div>
-            <!-- El reproductor de YouTube se mostrará aquí -->
-            <div id="youtube-player"></div>
+            
+            <!-- CAMBIO FUNDAMENTAL: Iframe estático en lugar de un div -->
+            <iframe 
+                id="youtube-player-iframe"
+                type="text/html" 
+                width="100%" 
+                src="https://www.youtube.com/embed/?enablejsapi=1&origin=https://ariansara.github.io"
+                frameborder="0"
+                allowfullscreen>
+            </iframe>
         </div>
 
         <div id="subtitles-container">
