@@ -1,4 +1,4 @@
-// --- VARIABLES GLOBALES ---
+/// --- VARIABLES GLOBALES ---
 let player;
 let currentPodcast = null;
 let subtitleInterval;
@@ -54,12 +54,10 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
         height: '0',
         width: '0',
-        // --- LA LÍNEA MÁGICA ESTÁ AQUÍ ---
         playerVars: {
-            // Le decimos a la API que nuestra página está alojada en este dominio.
+            // Asegúrate de que esta URL sea EXACTAMENTE la de tu página de GitHub
             'origin': 'https://ariansara.github.io'
         },
-        // ------------------------------------
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -94,18 +92,14 @@ function onPlayerStateChange(event) {
     }
 }
 
-/** 
- * CORRECCIÓN: Esta función ahora solo "prepara" el video, no lo reproduce.
- * Usamos cueVideoById() en lugar de loadVideoById().
- */
 function loadPodcast(podcast) {
     currentPodcast = podcast;
     podcastTitle.textContent = podcast.title;
     podcastArtist.textContent = podcast.artist;
-    player.cueVideoById(podcast.videoId); // Carga el video sin reproducirlo
+    player.cueVideoById(podcast.videoId);
     subtitlesEl.textContent = '...';
     progressBar.style.width = '0%';
-    playPauseBtn.textContent = '▶️'; // Asegura que el botón muestre 'Play'
+    playPauseBtn.textContent = '▶️';
 }
 
 function updateUI() {
@@ -153,13 +147,8 @@ function setupEventListeners() {
         }
     });
 
-    /** 
-     * CORRECCIÓN: La lógica del botón ahora maneja el play/pause de forma explícita.
-     */
     playPauseBtn.addEventListener('click', () => {
-        // No hacer nada si no se ha seleccionado un podcast
         if (!currentPodcast) return;
-
         const playerState = player.getPlayerState();
         if (playerState === YT.PlayerState.PLAYING) {
             player.pauseVideo();
