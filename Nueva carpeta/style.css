@@ -1,0 +1,171 @@
+/* Estilos Generales */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.podcast-container {
+    background-color: #181818;
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+/* Reproductor de Audio */
+.podcast-player {
+    background-color: #282828;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.player-info h2 {
+    margin: 0 0 5px 0;
+}
+
+.player-info p {
+    margin: 0 0 15px 0;
+    color: #b3b3b3;
+}
+
+#audio-player {
+    width: 100%;
+}
+
+/* Sección de Subtítulos */
+#subtitles-container {
+    background: #282828;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#subtitles {
+    font-size: 1.5em;
+    color: #b3b3b3;
+    transition: color 0.3s;
+}
+
+#subtitles.active {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Filtros y Lista de Podcasts */
+main {
+    display: flex;
+    gap: 30px;
+}
+
+.filter-section {
+    width: 30%;
+}
+
+.podcast-list-section {
+    width: 70%;
+}
+
+h3 {
+    border-bottom: 1px solid #282828;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#genre-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-btn {
+    background-color: #282828;
+    color: #ffffff;
+    border: 1px solid #282828;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s;
+}
+
+.filter-btn:hover {
+    background-color: #383838;
+}
+
+.filter-btn.active {
+    background-color: #1DB954; /* Color verde Spotify */
+    border-color: #1DB954;
+}
+
+#podcast-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.podcast-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.podcast-item:hover {
+    background-color: #282828;
+}
+
+.podcast-item-info h4 {
+    margin: 0;
+}
+
+.podcast-item-info p {
+    margin: 0;
+    color: #b3b3b3;
+    font-size: 0.9em;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #b3b3b3;
+    font-size: 0.9em;
+}
+
+@media (max-width: 600px) {
+    main {
+        flex-direction: column;
+    }
+    .filter-section, .podcast-list-section {
+        width: 100%;
+    }
+}

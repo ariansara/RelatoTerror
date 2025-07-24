@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página de Podcasts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="podcast-container">
+        <header>
+            <h1>Escucha nuestros Podcasts</h1>
+            <p>Selecciona un género y elige un episodio para empezar.</p>
+        </header>
+
+        <div class="podcast-player">
+            <div class="player-info">
+                <h2 id="podcast-title">Selecciona un podcast</h2>
+                <p id="podcast-artist">...</p>
+            </div>
+            <audio id="audio-player" controls></audio>
+        </div>
+
+        <div id="subtitles-container">
+            <p id="subtitles">Aquí aparecerán los subtítulos...</p>
+        </div>
+
+
+        <main>
+            <div class="filter-section">
+                <h3>Filtrar por Género</h3>
+                <div id="genre-filters">
+                    <button class="filter-btn active" data-genre="all">Todos</button>
+                    <button class="filter-btn" data-genre="tecnologia">Tecnología</button>
+                    <button class="filter-btn" data-genre="historias">Historias</button>
+                    <button class="filter-btn" data-genre="comedia">Comedia</button>
+                </div>
+            </div>
+
+            <div class="podcast-list-section">
+                <h3>Episodios Disponibles</h3>
+                <ul id="podcast-list">
+                    <!-- Los episodios se cargarán aquí con JavaScript -->
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Mi Página de Podcasts</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

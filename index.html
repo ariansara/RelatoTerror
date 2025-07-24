@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página de Podcasts (Versión YouTube)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="podcast-container">
+        <header>
+            <h1>Escucha nuestros Podcasts</h1>
+            <p>Ahora con audio y subtítulos desde YouTube.</p>
+        </header>
+
+        <!-- El reproductor de YouTube se cargará aquí, pero lo haremos invisible con CSS -->
+        <div id="youtube-player"></div>
+
+        <div class="custom-player">
+            <div class="player-info">
+                <h2 id="podcast-title">Selecciona un episodio</h2>
+                <p id="podcast-artist">...</p>
+            </div>
+            <!-- Nuestros propios controles -->
+            <div class="controls">
+                <button id="play-pause-btn">▶️</button>
+                <div class="progress-bar-container">
+                    <div id="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="subtitles-container">
+            <p id="subtitles">Los subtítulos aparecerán aquí...</p>
+        </div>
+
+        <main>
+            <div class="filter-section">
+                <h3>Filtrar por Género</h3>
+                <div id="genre-filters">
+                    <button class="filter-btn active" data-genre="all">Todos</button>
+                    <button class="filter-btn" data-genre="ciencia">Ciencia</button>
+                    <button class="filter-btn" data-genre="desarrollo">Desarrollo</button>
+                    <!-- CAMBIO: Se actualizó la categoría -->
+                    <button class="filter-btn" data-genre="analisis">Análisis</button> 
+                </div>
+            </div>
+
+            <div class="podcast-list-section">
+                <h3>Episodios Disponibles</h3>
+                <ul id="podcast-list">
+                    <!-- Los episodios se cargarán aquí -->
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Mi Página de Podcasts</p>
+        </footer>
+    </div>
+
+    <!-- Script de la API de YouTube Iframe -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Nuestro script -->
+    <script src="app.js"></script>
+</body>
+</html>
